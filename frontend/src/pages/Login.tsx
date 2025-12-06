@@ -5,7 +5,7 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
@@ -18,6 +18,26 @@ export default function Login() {
 
     try {
       console.log("Loggin in with: ", credentials);
+
+      const response = await fetch("http://localhost:5002/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(credentials),
+      });
+
+      const data = await response.json();
+      console.log("Login response: ", data);
+
+      if (!response.ok) {
+        setError(data.message || "Invalid credentials");
+        setIsLoading(false);
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      window.location.href = "/";
     } catch (error) {}
   };
 
