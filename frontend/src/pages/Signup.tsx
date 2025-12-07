@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { registeruser } from "../api/auth";
 
 export default function Signup() {
   const [form, setForm] = useState({
@@ -23,19 +24,7 @@ export default function Signup() {
     }
 
     try {
-      const response = await fetch("http://localhost:5002/api/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || "Registration failed");
-        setIsLoading(false);
-        return;
-      }
+      await registeruser(form);
 
       setSuccess("Account created! Redirecting to login...");
       setIsLoading(false);
@@ -43,18 +32,18 @@ export default function Signup() {
       setTimeout(() => {
         window.location.href = "/login";
       }, 1200);
-    } catch (err) {
-      setError("Something went wrong. Please try again.");
+    } catch (err: any) {
+      setError(err.message);
       setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-[faf8f3] flex items-center justify-center">
-      <div className="bg-white p-6 py-12 rounded-sm min-w-md border-2 border-gray-200 shadow-lg">
+      <div className="bg-white p-6 rounded-sm min-w-md border-2 border-gray-200 shadow-lg">
         <div className="space-y-3 mb-8">
           <div className="text-4xl font-mono font-bold text-primary">🧱</div>
-          <p className="font-mono text-2xl">CREATE ACCOUNT</p>
+          <p className="font-mono text-2xl">CREATE ACCOUNT.</p>
           <p className="font-mono text-sm -mt-1 text-gray-400">
             Sign up to start tracking your internship
           </p>
@@ -110,7 +99,7 @@ export default function Signup() {
           </button>
         </form>
 
-        <div className="text-center mt-4">
+        <div className="text-right mt-4 py-4">
           <a
             href="/login"
             className="text-sm text-cyan-600 hover:text-amber-600"

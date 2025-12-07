@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { loginUser } from "../api/auth";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -17,25 +18,7 @@ export default function Login() {
     }
 
     try {
-      console.log("Loggin in with: ", credentials);
-
-      const response = await fetch("http://localhost:5002/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(credentials),
-      });
-
-      const data = await response.json();
-      console.log("Login response: ", data);
-
-      if (!response.ok) {
-        setError(data.message || "Invalid credentials");
-        setIsLoading(false);
-        return;
-      }
-
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      await loginUser(credentials);
 
       window.location.href = "/";
     } catch (error) {}
@@ -43,10 +26,10 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-[faf8f3] flex items-center justify-center ">
-      <div className="bg-white p-6 py-12 rounded-sm min-w-md  border-2 border-gray-200 shadow-lg">
+      <div className="bg-white p-6 rounded-sm min-w-md  border-2 border-gray-200 shadow-lg">
         <div className="space-y-3 mb-8">
           <div className="text-4xl font-mono font-bold text-primary ">🧱</div>
-          <p className="font-mono text-2xl">INTERNSHIP TRACKER</p>
+          <p className="font-mono text-2xl">INTERNSHIP TRACKER.</p>
           <p className="font-mono text-sm -mt-1  text-gray-400">
             Enter your credentials to continue
           </p>
@@ -97,12 +80,18 @@ export default function Login() {
             {isLoading ? "LOGGING IN" : "LOG IN"}
           </button>
         </form>
-        <div>
+        <div className="flex flex-col gap-2 py-4">
           <a
             href="/"
             className="text-right text-sm text-cyan-600 cursor-pointer hover:text-amber-600"
           >
-            View as guest
+            View as guest.
+          </a>
+          <a
+            href="/signup"
+            className="text-right text-sm text-emerald-600 cursor-pointer hover:text-amber-600"
+          >
+            No account? Sign up.
           </a>
         </div>
       </div>

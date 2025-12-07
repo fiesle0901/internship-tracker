@@ -1,5 +1,6 @@
 import { useState } from "react";
 import InputField from "./InputField";
+import { addEntry } from "../api/entries";
 
 type FormData = {
   date: string;
@@ -9,7 +10,7 @@ type FormData = {
   remarks: string;
 };
 
-export default function AddRowForm() {
+export default function AddRowForm({ onEntryAdded }: any) {
   const [formData, setFormData] = useState<FormData>({
     date: new Date().toISOString().split("T")[0],
     task: "",
@@ -40,22 +41,9 @@ export default function AddRowForm() {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:5002/api/entries", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(formData),
-      });
+      const newEntry = await addEntry(formData);
 
-      if (!response.ok) {
-        throw new Error("Failed to submit entry");
-      }
-
-      const data = await response.json();
-      console.log("Entry submitted: ", data);
+      onEntryAdded(newEntry);
 
       resetData();
     } catch (error) {
@@ -92,7 +80,7 @@ export default function AddRowForm() {
   return (
     <form
       onSubmit={handleAddEntry}
-      className="border border-gray-300 rounded  mx-auto p-6 bg-white"
+      className="w-full border border-gray-300 rounded  mx-auto p-6 bg-white"
     >
       <p className="text-lg font-semibold">ADD NEW ENTRY</p>
 

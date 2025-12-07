@@ -3,6 +3,25 @@ import { prisma } from "../lib/prisma";
 
 const router = Router();
 
+// GET /api/entries
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    const user = (req as any).user;
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const entries = await prisma.reportEntry.findMany({
+      where: { userId: user.id },
+      orderBy: { date: "asc" },
+    });
+    return res.json(entries);
+  } catch (err) {
+    res.status(500).json({ message: "Internal error" });
+  }
+});
+
 // POST /api/entries
 router.post("/", async (req: Request, res: Response) => {
   try {

@@ -7,7 +7,7 @@ export const register = async (req: Request, res: Response) => {
   console.log("REGISTER CONTROLLER STARTED", req.body);
 
   try {
-    const { email, password, name } = req.body;
+    const { email, password } = req.body;
 
     const emailExists = await prisma.user.findUnique({ where: { email } });
 
@@ -17,7 +17,7 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
-      data: { email, password: hashedPassword, name },
+      data: { email, password: hashedPassword },
     });
 
     res.json({ message: "User is registered", user });
