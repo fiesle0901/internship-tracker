@@ -3,6 +3,7 @@ import AddRowForm from "../components/AddRowForm";
 import Header from "../components/Header";
 import ReportTable from "../components/ReportTable";
 import { getReportEntries } from "../api/entries";
+import { useAuth } from "../context/AuthContext";
 
 type Entry = {
   id: number;
@@ -16,11 +17,12 @@ type Entry = {
 export default function Homepage() {
   const [entries, setEntries] = useState<Entry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { isGuest } = useAuth();
 
   const loadEntries = async () => {
     setIsLoading(true);
     try {
-      const data = await getReportEntries();
+      const data = await getReportEntries(isGuest);
       setEntries(data);
     } catch (err) {
       console.error(err);
@@ -31,7 +33,7 @@ export default function Homepage() {
 
   useEffect(() => {
     loadEntries();
-  }, []);
+  }, [isGuest]);
 
   const handleEntryAdded = (entry: Entry) => {
     setEntries((prev) => [entry, ...prev]);

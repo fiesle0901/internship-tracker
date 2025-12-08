@@ -1,6 +1,7 @@
 import { useState } from "react";
 import InputField from "./InputField";
 import { addEntry } from "../api/entries";
+import { useAuth } from "../context/AuthContext";
 
 type FormData = {
   date: string;
@@ -21,6 +22,7 @@ export default function AddRowForm({ onEntryAdded }: any) {
 
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { isGuest } = useAuth();
 
   const handleAddEntry = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,8 +137,10 @@ export default function AddRowForm({ onEntryAdded }: any) {
 
         <button
           type="submit"
-          disabled={isLoading}
-          className="min-w-[100px] bg-[#540000] h-10 px-8 py-2 font-bold rounded-sm  text-white text-sm hover:bg-[#540000]/90 cursor-pointer"
+          disabled={isLoading || isGuest}
+          className={`min-w-[100px] bg-[#540000] h-10 px-8 py-2 font-bold rounded-sm  text-white text-sm ${
+            isGuest ? " bg-gray-300" : "hover:bg-[#540000]/90 cursor-pointer"
+          }  `}
         >
           ADD ENTRY
         </button>

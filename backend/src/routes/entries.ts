@@ -61,4 +61,16 @@ router.post("/", async (req: Request, res: Response) => {
   }
 });
 
+// DEMO ACCOUNT
+router.get("/demo", async (req: Request, res: Response) => {
+  const demoUserId = 14;
+
+  const entries = await prisma.reportEntry.findMany({
+    where: { userId: demoUserId },
+    orderBy: { date: "asc" },
+  });
+
+  res.json(entries);
+});
+
 export default router;

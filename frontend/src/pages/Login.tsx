@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { loginUser } from "../api/auth";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const { loginAsGuest } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,7 +86,12 @@ export default function Login() {
         </form>
         <div className="flex flex-col gap-2 py-4">
           <a
-            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+
+              loginAsGuest();
+              navigate("/homepage");
+            }}
             className="text-right text-sm text-cyan-600 cursor-pointer hover:text-amber-600"
           >
             View as guest.

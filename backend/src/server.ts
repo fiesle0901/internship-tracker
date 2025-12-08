@@ -9,7 +9,16 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/entries", authMiddleware, entriesRouter);
+app.use(
+  "/api/entries",
+  (req, res, next) => {
+    if (req.path === "/demo") {
+      return next();
+    }
+    return authMiddleware(req, res, next);
+  },
+  entriesRouter
+);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server running on http://localhost:${process.env.PORT}`);

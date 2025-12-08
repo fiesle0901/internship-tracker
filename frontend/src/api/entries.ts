@@ -1,7 +1,9 @@
 const BASE_URL = "http://localhost:5002/api";
 
-export async function getReportEntries() {
-  const res = await fetch(`${BASE_URL}/entries`, {
+export async function getReportEntries(isGuest: boolean) {
+  const url = isGuest ? `${BASE_URL}/entries/demo` : `${BASE_URL}/entries`;
+
+  const res = await fetch(`${url}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json",
