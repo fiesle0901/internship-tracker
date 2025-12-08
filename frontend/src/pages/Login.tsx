@@ -20,7 +20,7 @@ export default function Login() {
     try {
       await loginUser(credentials);
 
-      window.location.href = "/";
+      window.location.href = "/homepage";
     } catch (error) {}
   };
 

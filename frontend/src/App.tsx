@@ -2,13 +2,21 @@ import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import { Route, Routes } from "react-router-dom";
 import Signup from "./pages/Signup";
+import ProtectedRoute from "./components/ProtectedRoutes";
 
 function App() {
   return (
     <Routes>
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Homepage />} />
+      <Route
+        path="/homepage"
+        element={
+          <ProtectedRoute>
+            <Homepage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
