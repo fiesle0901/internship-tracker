@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5002/api";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 export async function getReportEntries(isGuest: boolean) {
   const url = isGuest ? `${BASE_URL}/entries/demo` : `${BASE_URL}/entries`;

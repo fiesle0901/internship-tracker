@@ -3,6 +3,7 @@ import cors from "cors";
 import authRoutes from "./routes/authRoutes";
 import entriesRouter from "./routes/entries";
 import authMiddleware from "./middleware/authMiddleware";
+import process from "process";
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,8 @@ app.use(
   entriesRouter
 );
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT}`);
+const PORT = process.env.PORT || 5001;
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -16,7 +16,7 @@ services:
     command: npm run dev
 
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: internship_tracker_postgres
     restart: always
     environment:
