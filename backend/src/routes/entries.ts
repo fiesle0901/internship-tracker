@@ -63,11 +63,11 @@ router.post("/", async (req: Request, res: Response) => {
 
 // DEMO ACCOUNT
 router.get("/demo", async (req: Request, res: Response) => {
-  const demoUserId = 14;
+  const demoUserId = 1;
 
   const entries = await prisma.reportEntry.findMany({
     where: { userId: demoUserId },
-    orderBy: { date: "asc" },
+    orderBy: { date: "desc" },
   });
 
   res.json(entries);
