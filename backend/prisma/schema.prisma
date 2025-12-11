@@ -33,6 +33,6 @@ model ReportEntry {
   remarks   String?
   createdAt DateTime  @default(now())
 
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id])
+  userId    Int?
+  user      User?      @relation(fields: [userId], references: [id])
 }

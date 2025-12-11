@@ -67,7 +67,7 @@ router.get("/demo", async (req: Request, res: Response) => {
 
   const entries = await prisma.reportEntry.findMany({
     where: { userId: demoUserId },
-    orderBy: { date: "desc" },
+    orderBy: { date: "asc" },
   });
 
   res.json(entries);

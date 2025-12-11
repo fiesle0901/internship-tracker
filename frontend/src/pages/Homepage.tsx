@@ -36,7 +36,7 @@ export default function Homepage() {
   }, [isGuest]);
 
   const handleEntryAdded = (entry: Entry) => {
-    setEntries((prev) => [entry, ...prev]);
+    setEntries((prev) => [...prev, entry]);
   };
 
   return (
