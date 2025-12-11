@@ -4,19 +4,23 @@ import Header from "../components/Header";
 import ReportTable from "../components/ReportTable";
 import { getReportEntries } from "../api/entries";
 import { useAuth } from "../context/AuthContext";
+import HoursRendered from "../components/HoursRendered";
+import type { ReportEntry } from "../types/types";
 
-type Entry = {
-  id: number;
-  date: string;
-  task: string;
-  givenBy: string;
-  hours: number;
-  remarks?: string | null;
-};
+// type Entry = {
+//   id: number;
+//   date: string;
+//   task: string;
+//   givenBy: string;
+//   hours: number;
+//   remarks?: string | null;
+//   createdAt?: string | null;
+// };
 
 export default function Homepage() {
-  const [entries, setEntries] = useState<Entry[]>([]);
+  const [entries, setEntries] = useState<ReportEntry[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [hours, setHours] = useState<string>("");
   const { isGuest } = useAuth();
 
   const loadEntries = async () => {
@@ -35,7 +39,7 @@ export default function Homepage() {
     loadEntries();
   }, [isGuest]);
 
-  const handleEntryAdded = (entry: Entry) => {
+  const handleEntryAdded = (entry: ReportEntry) => {
     setEntries((prev) => [...prev, entry]);
   };
 
@@ -46,6 +50,7 @@ export default function Homepage() {
         <div className="flex flex-col gap-10 ">
           <AddRowForm onEntryAdded={handleEntryAdded} />
           <ReportTable entries={entries} isLoading={isLoading} />
+          <HoursRendered entries={entries} hours={hours} onChange={setHours} />
         </div>
       </div>
     </div>
